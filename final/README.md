@@ -38,7 +38,7 @@ Open `final/scripts/run_method1_inference.sh` and edit the header:
 #SBATCH --gres=gpu:4                 <-- Ensure you have 4 GPUs
 ```
 
-**Submission:**
+**Job Submission:**
 ```bash
 sbatch final/scripts/run_method1_inference.sh
 sbatch final/scripts/run_method2_inference.sh

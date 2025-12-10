@@ -60,12 +60,18 @@ python final/src/evaluation/local_inference_compressed.py --needle 2 --compressi
 We provide sample scripts in `final/scripts/`. **You must modify these** to match your cluster's configuration.
 
 **How to Modify:**
-Open `final/scripts/run_method1_inference.sh` and edit the header:
+Open `final/scripts/run_method1_inference.sh` and edit the header: do the same for `final/scripts/run_method2_inference.sh`
 ```bash
 #SBATCH --partition=your_partition   <-- Change this
 #SBATCH --account=your_account       <-- Change this
 #SBATCH --nodelist=node_name         <-- Remove or change this
 #SBATCH --gres=gpu:4                 <-- Ensure you have 4 GPUs
+```
+
+**Finally: Job Submission: the whole it will take 6-8 hours in total**
+```bash
+sbatch final/scripts/run_method1_inference.sh
+sbatch final/scripts/run_method2_inference.sh
 ```
 
 ---
