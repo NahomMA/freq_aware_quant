@@ -1,0 +1,38 @@
+font:
+  family: DejaVu Sans Mono
+  weight: bold
+  size: 18
+rendering:
+  padding: 20
+  line_spacing: 12
+  background_color: "#FFFFFF"
+  text_color: "#000000"
+  # Force a reasonable document width to ensure wrapping
+  page_size: [1024, 2000] 
+  margins: [20, 20]
+  alignment: "LEFT"
+compression:
+  block_size: 16
+  clusters:
+    mild: 2048    
+    aggressive: 2048  # Increased from 512 to handle letter alignment better
+  keep_ratio:
+    mild: 0.95
+    aggressive: 0.80  # Increased from 0.50 to give K-Means sharper edges
+data:
+  convbench_path: src/data/ConvBench.xlsx
+  turns_per_sample: 6
+  synthetic_turns:
+    - "User: Summarize the debate about Frequency-Aware Vector Quantization."
+    - "Assistant: FAVQ keeps low-frequency semantics while aggressively compressing edges."
+    - "User: Why render text as images?"
+    - "Assistant: Visual tokens can store hundreds of words with far fewer KV cache slots."
+    - "User: What is the target compression ratio?"
+    - "Assistant: Achieve 3-5x reduction versus text tokens without hurting recall."
+evaluation:
+  openai_model: gpt-4o
+  prompt: "Transcribe this conversation image verbatim. If blurred, guess the missing words."
+  max_tokens: 600
+  temperature: 0.0
+paths:
+  artifacts_dir: artifacts

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Environment
+.env
+*.swp
+*.swo
+*~
+
+# Results & Data
+final/results/
+*.out
+*.err
+
+# IDE
+.vscode/
+.idea/
+

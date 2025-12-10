@@ -1,0 +1,2 @@
+{"unique_id": "test_2needle_sample_001", "question": "<|user|>What is the main topic discussed in the first conversation?", "answer": "TEST_PREFIX The main topic is frequency-aware compression for vision-language models.", "random_string_to_prepend": "TEST_PREFIX", "image_paths": ["/home/nbirh002/frequncy-aware_quant/evaluation/mrcr/data/rendered_images/sample_image.png"]}
+
