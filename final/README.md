@@ -9,15 +9,21 @@ Full-scale evaluation on the MRCR (Multi-Round Co-Reference) dataset using GLM-4
 
 ## Running Inference
 
-You can run the evaluation interactively (for debugging) or submit it as a batch job (recommended for full runs).
+**Prerequisite:** Render images from conversation text first.
 
-### 1. Interactive Mode
-Allocating resources (Example - adjust partition/account as needed):
+### Step 0: Render Images
+```bash
+python final/scripts/render_images.py --font-path Verdana.ttf
+```
+This generates `final/rendered_images/{unique_id}/page_*.png` and updates `.jsonl` files with absolute image paths.
+
+### Step 1: Interactive Mode
+Allocate resources (adjust partition/account as needed):
 ```bash
 salloc -p <partition_name> --gres=gpu:4 --cpus-per-task=16 --time=04:00:00
 ```
 
-Running the scripts:
+Run evaluation:
 ```bash
 # Method 1: Image-Level Compression
 python final/src/evaluation/local_inference.py
@@ -26,7 +32,7 @@ python final/src/evaluation/local_inference.py
 python final/src/evaluation/local_inference_compressed.py --needle 2 --compression ultra_mild
 ```
 
-### 2. Batch Job (SLURM)
+### Step 2: Batch Job (SLURM)
 We provide sample scripts in `final/scripts/`. **You must modify these** to match your cluster's configuration.
 
 **How to Modify:**

@@ -56,12 +56,21 @@ python mileston-1/milestone_1_run.py
 ### 3. Final Evaluation (Inference)
 Run the full benchmark on the MRCR dataset using GLM-4V. See `final/README.md` for detailed instructions on interactive and batch (HPC) execution.
 
-## Warning: Hardware Requirements: you need to have the following resource the model is to bing and data is also huge
+## Hardware Requirements
 - **GPUs:** 4× NVIDIA A100 (40GB) or equivalent.
 - **RAM:** ~128GB System RAM.
 - **Storage:** ~50GB for model weights and dataset.
 
-### 1. Interactive Mode
+**Warning:** The model is large and the dataset requires significant storage.
+
+### Step 0: Render Images (Required First)
+Before running inference, render conversation text to images:
+```bash
+python final/scripts/render_images.py --font-path Verdana.ttf
+```
+This generates `final/rendered_images/` and updates `.jsonl` files with image paths.
+
+### Step 1: Interactive Mode
 Allocating resources (Example - adjust partition/account as needed):
 ```bash
 salloc -p <partition_name> --gres=gpu:4 --cpus-per-task=16 --time=04:00:00
@@ -76,7 +85,7 @@ python final/src/evaluation/local_inference.py
 python final/src/evaluation/local_inference_compressed.py --needle 2 --compression ultra_mild
 ```
 
-### 2. Batch Job (SLURM)
+### Step 2: Batch Job (SLURM)
 We provide sample scripts in `final/scripts/`. **You must modify these** to match your cluster's configuration.
 
 **How to Modify:**
