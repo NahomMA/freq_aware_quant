@@ -6,68 +6,69 @@
 **Date:** December 2025
 
 ## Overview
+This project implements post-training frequency-aware compression for Vision-Language Models (VLMs) using DCT-based quantization. It explores two intervention points:
+1.  **Method 1 (Image-Level):** Compressing input pixels via Block DCT.
+2.  **Method 2 (Token-Level):** Compressing internal visual embeddings via DCT + Quantization.
 
-Post-training frequency-aware compression for vision-language models (VLMs) using DCT-based quantization. Investigates two compression intervention points: image-level (Method 1) and token-level (Method 2).
-
-## Key Results
-
-- **Method 1** (Image DCT): 2× compression, accuracy maintained (35.86% vs 34.98%)
-- **Method 2** (Token DCT): Signals need for training phase (2.79% vs 34.98%)
-
-## Structure
-
+## Project Structure
 ```
 nahom-final/
 ├── mileston-1/          # Proof-of-concept (ConvBench, report figures)
 │   ├── src/             # Early DCT implementation
-│   ├── artifacts/       # Visualization outputs (spectrum, residual)
-│   └── README.md        # Milestone 1 documentation
+│   └── artifacts/       # Visualization outputs (spectrum, residual)
 │
-└── final/               # local post training implementation (MRCR, GLM-4V)
-    ├── src/             # Methods 1 & 2 implementation
-    ├── scripts/         # SLURM inference scripts
-    ├── data/            # MRCR dataset
-    └── README.md        # Final implementation guide
+└── final/               # Full Evaluation (MRCR, GLM-4V)
+    ├── src/             # Production implementation of Methods 1 & 2
+    ├── scripts/         # HPC/SLURM job scripts
+    ├── data/            # MRCR dataset (Needle-In-A-Haystack)
+    └── results/         # Output logs and metrics
 ```
 
 ## Quick Start
 
-### Milestone 1 (Report Figures)
+### 1. Environment Setup
 ```bash
-cd mileston-1
-python milestone_1_run.py  # Generate frequency visualizations
-```
-
-### Final Implementation
-```bash
-cd final
 conda env create -f environment.yml
-conda activate freq_quant
-
-# Method 1
-cd src && python evaluation/local_inference.py
-
-# Method 2
-cd src && python evaluation/local_inference_compressed.py --needle 2 --compression ultra_mild
+conda activate freq_aware_quant
 ```
 
-## Hardware Requirements
+### 2. Milestone 1 (Visualizations)
+Generate the frequency spectrum and residual plots used in the report:
+```bash
+python mileston-1/milestone_1_run.py
+# Check outputs in: mileston-1/artifacts/
+```
 
-- **GPUs:** 4× NVIDIA A100 (40GB)
-- **Model:** GLM-4V-9B (9B parameters)
-- **Memory:** ~160GB total (distributed)
+### 3. Final Evaluation (Inference)
+Run the full benchmark on the MRCR dataset using GLM-4V. See `final/README.md` for detailed instructions on interactive and batch (HPC) execution.
+### 1. Interactive Mode
+Allocating resources (Example - adjust partition/account as needed):
+```bash
+salloc -p <partition_name> --gres=gpu:4 --cpus-per-task=16 --time=04:00:00
+```
 
-## Documentation
+Running the scripts:
+```bash
+# Method 1: Image-Level Compression
+python final/src/evaluation/local_inference.py
 
-- **Main README** (this file): Project overview
-- **`mileston-1/README.md`**: Proof-of-concept details, figure generation
-- **`final/README.md`**: Production code, full-scale evaluation
+# Method 2: Token-Level Compression
+python final/src/evaluation/local_inference_compressed.py --needle 2 --compression ultra_mild
+```
 
+### 2. Batch Job (SLURM)
+We provide sample scripts in `final/scripts/`. **You must modify these** to match your cluster's configuration.
 
+**How to Modify:**
+Open `final/scripts/run_method1_inference.sh` and edit the header:
+```bash
+#SBATCH --partition=your_partition   <-- Change this
+#SBATCH --account=your_account       <-- Change this
+#SBATCH --nodelist=node_name         <-- Remove or change this
+#SBATCH --gres=gpu:4                 <-- Ensure you have 4 GPUs
+```
 
 ---
-
-**For detailed implementation, see:**
-- Milestone 1 (early work): `mileston-1/README.md`
-- Final implementation: `final/README.md`
-
+**Documentation:**
+- **[Milestone 1 Details](mileston-1/README.md)**: Proof-of-concept and figure generation.
+- **[Final Implementation](final/README.md)**: Full-scale evaluation and HPC usage guide.
