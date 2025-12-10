@@ -34,7 +34,21 @@ conda activate freq_aware_quant
 
 ### 2. Milestone 1 (Visualizations)
 Generate the frequency spectrum and residual plots used in the report:
+
+You need OpenAI key su
 ```bash
+# OpenAI API Configuration
+# 
+# 1. Copy this file to .env:
+cp env_template.txt mileston-1/.env
+#
+# 2. Replace 'your_key_here' with your actual OpenAI API key
+#    Get it from: https://platform.openai.com/api-keys
+#
+# 3. Keep .env file private (already in .gitignore)
+
+OPENAI_API_KEY=your_key_here
+
 python mileston-1/milestone_1_run.py
 # Check outputs in: mileston-1/artifacts/
 ```
