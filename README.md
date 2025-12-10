@@ -41,6 +41,12 @@ python mileston-1/milestone_1_run.py
 
 ### 3. Final Evaluation (Inference)
 Run the full benchmark on the MRCR dataset using GLM-4V. See `final/README.md` for detailed instructions on interactive and batch (HPC) execution.
+
+## Warning: Hardware Requirements: you need to have the following resource the model is to bing and data is also huge
+- **GPUs:** 4× NVIDIA A100 (40GB) or equivalent.
+- **RAM:** ~128GB System RAM.
+- **Storage:** ~50GB for model weights and dataset.
+
 ### 1. Interactive Mode
 Allocating resources (Example - adjust partition/account as needed):
 ```bash
