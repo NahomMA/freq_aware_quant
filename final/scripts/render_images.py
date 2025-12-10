@@ -198,7 +198,19 @@ def process_one(item):
                 if 'page-size' in config else PAGE_SIZE)
     margin_x = config.get('margin-x', MARGIN_X)
     margin_y = config.get('margin-y', MARGIN_Y)
-    font_path = config.get('font-path', FONT_PATH)
+    
+    # Get font path - prioritize command line argument, otherwise use config
+    font_path = FONT_PATH if FONT_PATH else config.get('font-path')
+    
+    # If font_path is relative and doesn't exist, try to resolve it
+    if font_path and not os.path.isabs(font_path) and not os.path.exists(font_path):
+        # Try relative to project root
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(script_dir)
+        potential_path = os.path.join(project_root, os.path.basename(font_path))
+        if os.path.exists(potential_path):
+            font_path = potential_path
+    
     font_name = os.path.basename(font_path).split('.')[0]
     font_size = config.get('font-size', FONT_SIZE)
     line_height = config.get('line-height', None) or (font_size + 1)
@@ -460,15 +472,19 @@ def main():
             shutil.rmtree(dir_path)
         os.makedirs(dir_path, exist_ok=True)
     
-    OUTPUT_DIR = './mrcr/rendered_images/'
+    # Calculate paths relative to script location
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # scripts/
+    project_root = os.path.dirname(script_dir)  # final/
+    
+    OUTPUT_DIR = os.path.join(project_root, 'rendered_images')
     
     if not recover:
         ensure_empty_dir(OUTPUT_DIR)
 
     for needle in [2,4,8]:
     
-        JSON_PATH = f'./mrcr/data/processed_{needle}needle_0-128k.json'
-        FINAL_JSONL_OUTPUT_PATH = f'./mrcr/data/processed_{needle}needle_0-128k.jsonl'
+        JSON_PATH = os.path.join(project_root, 'data', f'processed_{needle}needle_0-128k.json')
+        FINAL_JSONL_OUTPUT_PATH = os.path.join(project_root, 'data', f'processed_{needle}needle_0-128k.jsonl')
         
         if not recover:
             if os.path.exists(FINAL_JSONL_OUTPUT_PATH):
