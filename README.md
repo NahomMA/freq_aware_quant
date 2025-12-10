@@ -45,8 +45,8 @@ cp env_template.txt mileston-1/.env
 # 2. Replace 'your_key_here' with your actual OpenAI API key
 #    Get it from: https://platform.openai.com/api-keys
 #
-# 3. Keep .env file private (already in .gitignore)
-
+# 3. open .env file  under add mileston-1
+ 
 OPENAI_API_KEY=your_key_here
 
 python mileston-1/milestone_1_run.py
